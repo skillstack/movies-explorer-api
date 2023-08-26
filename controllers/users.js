@@ -59,7 +59,14 @@ module.exports.login = (req, res, next) => {
   return userSchema.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret', { expiresIn: '7d' });
-      res.send({ token });
+
+      const cookieOptions = {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      };
+
+      res.cookie('jwt', token, cookieOptions);
+      res.send({ message: 'Успешная аутентификация', email });
     })
     .catch(next);
 };
@@ -85,4 +92,12 @@ module.exports.updateUser = (req, res, next) => {
       }
       return next(err);
     });
+};
+
+module.exports.logoutUser = async (req, res, next) => {
+  try {
+    res.clearCookie('jwt').send({ message: 'Вы вышли' });
+  } catch (err) {
+    next(err);
+  }
 };

@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { errors } = require('celebrate');
+const cookieParser = require('cookie-parser');
 const router = require('./routes/router');
 const auth = require('./middlewares/auth');
 const handleError = require('./middlewares/handleError');
@@ -13,9 +14,17 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { NODE_ENV, PORT = 3000, MONGO_DB } = process.env;
 const app = express();
 
+const corsOptions = {
+  origin: 'https://iavianm.nomoredomains.rocks/',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
+  credentials: true,
+};
+
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(requestLogger);
+app.use(cookieParser());
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');

@@ -5,7 +5,8 @@ const ForbiddenError = require('../utils/errors/ForbiddenError');
 const { HTTP_STATUS_CREATED } = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
-  movieSchema.find({})
+  const owner = req.user._id;
+  movieSchema.find({ owner })
     .then((movies) => {
       res.send(movies);
     })
