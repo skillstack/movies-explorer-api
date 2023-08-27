@@ -15,7 +15,7 @@ const { NODE_ENV, PORT = 3000, MONGO_DB } = process.env;
 const app = express();
 
 const corsOptions = {
-  origin: 'https://iavianm.nomoredomains.rocks',
+  origin: 'https://vitaliydiploma.nomoredomainsicu.ru',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
   credentials: true,
